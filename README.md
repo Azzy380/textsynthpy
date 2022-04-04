@@ -1,4 +1,4 @@
-# Medium multiply
+# TextSynthPy
 A small demo wrapper for a TextSynth api. To use, you need textsynth.com account to get api key. 
 
 ### Installation
