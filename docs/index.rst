@@ -9,16 +9,14 @@ Welcome to TextSynthPy's documentation!
 .. toctree::
    :maxdepth: 2
    :caption: Python Api:
-   
    source/api/textsynth
    source/api/complete
    source/api/log
 
 .. toctree::
-	:maxdepth: 2
-	:caption: Examples:
-	
-	source/exaples/usage
+   :maxdepth: 2
+   :caption: Examples:
+   source/exaples/usage
 
 
 Indices and tables
