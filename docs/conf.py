@@ -28,9 +28,9 @@ author = 'Karol Janus'
 # extensions coming with Sphinx (named 'sphinx.ext.*') or your custom
 # ones.
 extensions = [
-	'recommonmark',
-    'sphinx.ext.autodoc',
-    'sphinx.ext.viewcode'
+'recommonmark',
+'sphinx.ext.autodoc',
+'sphinx.ext.viewcode'
 ]
 
 # Add any paths that contain templates here, relative to this directory.
