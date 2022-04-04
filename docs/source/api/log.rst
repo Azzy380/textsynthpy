@@ -1,9 +1,9 @@
 ==============
-TextSynth
+Log
 ==============
 
-.. currentmodule:: textsynthpy.TextSynth
+.. currentmodule:: textsynthpy.Log
 
 .. Don't include inherited members to keep the doc short
-.. autoclass:: textsynthpy.TextSynth
+.. autoclass:: textsynthpy.Log
     :members:
