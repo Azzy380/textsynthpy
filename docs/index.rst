@@ -14,6 +14,11 @@ Welcome to TextSynthPy's documentation!
    source/api/complete
    source/api/log
 
+.. toctree::
+	:maxdepth: 2
+	:caption: Examples:
+	
+	source/exaples/usage
 
 
 Indices and tables
