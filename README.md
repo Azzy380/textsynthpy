@@ -21,3 +21,6 @@ answer = con.text_complete("prompt")
 # print generated text
 print(answer.text)
 ```
+
+# documentation
+https://textsynthpy.readthedocs.io/en/latest/
