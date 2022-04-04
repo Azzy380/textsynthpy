@@ -8,7 +8,7 @@ Welcome to TextSynthPy's documentation!
 
 .. toctree::
    :maxdepth: 2
-   :caption: Contents:
+   :caption: Python Api:
    
    source/api/textsynth
    source/api/complete
