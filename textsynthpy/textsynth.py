@@ -39,7 +39,7 @@ class TextSynth():
 		together = False
 	):
 			"""
-			Returns Answer object of completed text by given prompt.
+			Returns Complete object of completed text by given prompt.
 			
 			:param prompt: The input text to complete.
 			:type prompt: str
