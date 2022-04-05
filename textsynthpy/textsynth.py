@@ -131,9 +131,3 @@ A positive value penalizes tokens which already appeared in the generated text p
 		data ={"text": text}
 		headers = {"Content-Type": "application/json", "Authorization": f"Bearer {self.key}"}
 		return (post(f"https://api.textsynth.com/v1/engines/{self.engine}/tokenize", json = data, headers = headers)).json()["tokens"]
-		
-		
-a = TextSynth("fc1cf1f28f3eb8a1dd826fdd0dfddf68")
-
-an = a.tokenize("prompter")
-print(an)
