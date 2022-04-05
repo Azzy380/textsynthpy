@@ -26,4 +26,4 @@ print(answer.text)
 ```
 
 # documentation
-https://textsynthpy.readthedocs.io/en/latest/
+https://textsynthpy.readthedocs.io/
