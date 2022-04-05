@@ -104,7 +104,7 @@ A positive value penalizes tokens which already appeared in the generated text p
 			answer = answer.json()
 			return Complete(answer["text"], answer["reached_end"], answer["input_tokens"], answer["output_tokens"])
 		
-	def log_prob(continuation: str, context: str = ""):
+	def log_prob(continuation: str = "", context: str = ""):
 		"""
 		Returns Log object:
 		This endpoint returns the logarithm of the probability that a continuation is generated after a context. It can be used to answer questions when only a few answers (such as yes/no) are possible. It can also be used to benchmark the models. 
@@ -115,6 +115,9 @@ A positive value penalizes tokens which already appeared in the generated text p
 		:param context: If empty string, the context is set to the End-Of-Text token.
 		:type context: str
 		"""
+		
+		if continuation == "":
+			raise ValueError("continuation parameter cannot be empty")
 			
 		data = {"context": context, "continuation": continuation}
 		headers = {"Content-Type": "application/json", "Authorization": f"Bearer {self.key}"}
