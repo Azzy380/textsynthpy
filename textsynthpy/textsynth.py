@@ -1,6 +1,6 @@
 from requests import post
 from json import loads
-from answer import Complete, Log
+from .answer import Complete, Log
 
 class TextSynth():
 	"""
