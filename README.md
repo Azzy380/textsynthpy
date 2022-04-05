@@ -20,6 +20,9 @@ answer = con.text_complete("prompt")
 
 # print generated text
 print(answer.text)
+
+# Note
+.text attribute returns only generated text, without endeared prompt.
 ```
 
 # documentation
