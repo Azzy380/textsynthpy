@@ -126,7 +126,7 @@ A positive value penalizes tokens which already appeared in the generated text p
 		
 	def tokenize(self, text):
 		"""
-		Returns array of integers. This endpoint returns the token indexes corresponding to a given text. It is useful for example to know the exact number of tokens of a text or to specify logit biases with the completion endpoint. The tokens are specific to a given model.
+		Method returns array of integers. This endpoint returns the token indexes corresponding to a given text. It is useful for example to know the exact number of tokens of a text or to specify logit biases with the completion endpoint. The tokens are specific to a given model. Note: using tokenize endpoint is free.
 		 
 		:param text: string
 		:type text: str
