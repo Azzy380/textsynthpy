@@ -15,7 +15,7 @@ with open(path.join(HERE, 'README.md'), encoding='utf-8') as f:
 # This call to setup() does all the work
 setup(
     name="textsynthpy",
-    version="0.2.4",
+    version="0.2.5",
     description="Demo textsynth api wrapper. You need textsynth.com account to get api key. Issues: https://github.com/Azzy380/textsynthpy/issues",
     long_description=long_description,
     long_description_content_type="text/markdown",
