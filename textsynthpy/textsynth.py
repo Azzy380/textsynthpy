@@ -1,6 +1,7 @@
-from requests import post
-from json import loads
-from .answer import Complete, Log
+from requests import post, get
+from json import loads, dumps
+from .answer import *
+from .errors import *
 
 class TextSynth():
 	"""
@@ -12,13 +13,15 @@ class TextSynth():
 	:param engine: Textsynth engine to use. It is optional parameter, in default uses "gptj_6B". Aviable engines are on 'https://textsynth.com/documentation.html'
 	:param engine: str
 	"""
-	def __init__(self, key: str, engine = None):
+	def __init__(self, key: str, engine: str = None):
 		self.key = key
+		
 		if isinstance(engine, str):
+			if engine not in TextSynth.engines(True):
+				print("Warning. Chosen engine might not exist.")
 			self.engine = engine
 		else:
-			self.engine = "gptj_6B"
-		self.answer = {}
+			self.engine = "gptj_6b"
 		print(f"Chosen engine: {self.engine}")
 	
 	def _check(self, max_tokens):
@@ -28,10 +31,45 @@ class TextSynth():
 			max = 1024
 		if max_tokens > max:
 			raise ValueError(f"max_tokens can't be higher than {max} for used engine")
+			
+	@staticmethod
+	def _streamed(answer):
+		answer = answer.text.split("\n")
+		list = []
+		for i in answer:
+			if i != "":
+				temp = loads(i)
+				tx = temp.get("text")
+				re = temp.get("reached_end")
+				inp = temp.get("input_tokens")
+				outp = temp.get("output_tokens")
+				t = temp.get("truncated_prompt")
+				
+				b = Complete(text = tx, reached_end = re, truncated_prompt = t, input_tokens = inp, output_tokens = outp)
+				list.append(b)
+		
+		return list
+		
+	@staticmethod
+	def engines(as_dict: bool = False):
+		"""
+		Downloads from githup page current list of engines with small descriprion and prints it OR returns as a list
+		
+		:param as_dict: if True returns a list, else prints engines on screen
+		:type as_dict: bool
+		"""
+		try:
+			url = "https://raw.githubusercontent.com/Azzy380/textsynthpy/main/engines.json"
+			e = loads(get(url).text)
+			if as_dict:
+				return [*e]
+			print(f"Known textsynth engines:\n{dumps(e, indent = 2)[2:-1]}")
+		except:
+			print("Could not download current engine list. Please check internet connection or check current engines on https://textsynth.com/documentation.html")
 	
 	def text_complete(
 		self,
-		prompt: str,
+		prompt: str = None,
 		max_tokens: int = 100,
 		temperature: float = 1,
 		top_k: int = 40,
@@ -63,10 +101,10 @@ class TextSynth():
 		:param stream: Optional (Default = false). If true, the output is streamed so that it is possible to display the result before the complete output is generated. Several JSON answers are output, wrapper returns list of Complete objects
 		:type stream: bool
 		
-		:param stop: (Default = None). Stop the generation when the string(s) are encountered. The generated text does not contain the string. stream must be set to false when this feature is used. The length of the array is at most 5.
+		:param stop: Optional (Default = None). Stop the generation when the string(s) are encountered. The generated text does not contain the string. stream must be set to false when this feature is used. The length of the array is at most 5.
 		:type stop: str
 		
-		:param logit_bias: Optional (Default = {}). Modify the likelihood of the specified tokens in the completion. The specified object is a map between the token indexes and the corresponding logit bias. A negative bias reduces the likelihood of the corresponding token. The bias must be between -100 and 100. Note that the token indexes are specific to the selected model. You can use the tokenize api endpoint (tokenize() method) to retrieve the token indexes of a given model. 
+		:param logit_bias: Optional (Default = {}). Modify the likelihood of the specified tokens in the completion. The specified object is a map between the token indexes and the corresponding logit bias. A negative bias reduces the likelihood of the corresponding token. The bias must be between -100 and 100. Note that the token indexes are specific to the selected model. You can use tokenize()  to retrieve the token indexes of a given model. 
 Example: if you want to ban the " unicorn" token for GPT-J, you can use: { "44986": -100 }
 		:type logit_bias: dict
 		
@@ -77,29 +115,31 @@ Example: if you want to ban the " unicorn" token for GPT-J, you can use: { "4498
 A positive value penalizes tokens which already appeared in the generated text proportionaly to their frequency. Hence it forces the model to have a more diverse output.
 		:type frequency_penalty: int
 		"""
+		
 		self._check(max_tokens)
+		if prompt == None:
+			raise ValueError("Prompt cannot be empty")
+			
+		if stop != None and stream == True:
+			raise ValueError("If stop parametr is  entered, stream must be set to false")
 		
 		data = {"prompt": prompt, "max_tokens": max_tokens, "temperature": temperature, "top_k": top_k, "top_p": top_p, "stream": stream, "stop": stop, "logit_bias": logit_bias, "presence_penalty": presence_penalty, "frequency_penalty": frequency_penalty}
 		headers = {"Content-Type": "application/json", "Authorization": f"Bearer {self.key}"}
-	
-		answer = (post(f"https://api.textsynth.com/v1/engines/{self.engine}/completions", json = data, headers = headers))
 		
+		answer = (post(f"https://api.textsynth.com/v1/engines/{self.engine}/completions", json = data, headers = headers, stream = stream))
+		
+		try:
+			answer = answer.json()
+			if answer.get("status") == 404:
+				raise TSError(f"Textsynth returned error: {answer.get('error')}")
+		except TSError as e:
+			print(e)
+			exit(0)
+		except:
+			pass
+			
 		if stream:
-			answer = answer.text.split("\n")
-			list = []
-			for i in answer:
-				if i != "":
-					print(i)
-					temp = loads(i)
-					tx = temp.get("text")
-					re = temp.get("reached_end")
-					inp = temp.get("input_tokens")
-					outp = temp.get("output_tokens")
-					t = temp.get("truncated_prompt")
-					
-					b = Complete(text = tx, reached_end = re, truncated_prompt = t, input_tokens = inp, output_tokens = outp)
-					list.append(b)
-			return list
+			return self._streamed(answer)
 		else:
 			answer = answer.json()
 			return Complete(answer["text"], answer["reached_end"], answer["input_tokens"], answer["output_tokens"])
@@ -126,11 +166,11 @@ A positive value penalizes tokens which already appeared in the generated text p
 		
 	def tokenize(self, text):
 		"""
-		Method returns array of integers. This endpoint returns the token indexes corresponding to a given text. It is useful for example to know the exact number of tokens of a text or to specify logit biases with the completion endpoint. The tokens are specific to a given model. Note: using tokenize endpoint is free.
+		Method returns array of integers: token indexes corresponding to a given text. It is useful for example to know the exact number of tokens of a text or to specify logit biases with the completion endpoint. The tokens are specific to a given model. Note: using tokenize endpoint is free.
 		 
 		:param text: string
 		:type text: str
 		"""
 		data ={"text": text}
 		headers = {"Content-Type": "application/json", "Authorization": f"Bearer {self.key}"}
-		return (post(f"https://api.textsynth.com/v1/engines/{self.engine}/tokenize", json = data, headers = headers)).json()["tokens"]
+		return post(f"https://api.textsynth.com/v1/engines/{self.engine}/tokenize", json = data, headers = headers).json()["tokens"]
