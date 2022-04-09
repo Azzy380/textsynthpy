@@ -20,8 +20,11 @@ answer = con.text_complete("prompt")
 
 # print generated text
 print(answer.text)
+```
 
 ### Engines
+
+```Python
 # You can print engine list by using
 TextSynth.engines()
 
