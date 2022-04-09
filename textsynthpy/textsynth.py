@@ -15,13 +15,12 @@ class TextSynth():
 	"""
 	def __init__(self, key: str, engine: str = None):
 		self.key = key
+		self.engine = "gptj_6B"
 		
 		if isinstance(engine, str):
 			if engine not in TextSynth.engines(True):
 				print("Warning. Chosen engine might not exist.")
 			self.engine = engine
-		else:
-			self.engine = "gptj_6b"
 		print(f"Chosen engine: {self.engine}")
 	
 	def _check(self, max_tokens):
@@ -66,6 +65,7 @@ class TextSynth():
 			print(f"Known textsynth engines:\n{dumps(e, indent = 2)[2:-1]}")
 		except:
 			print("Could not download current engine list. Please check internet connection or check current engines on https://textsynth.com/documentation.html")
+			return "gptj_6B"
 	
 	def text_complete(
 		self,
@@ -132,17 +132,16 @@ A positive value penalizes tokens which already appeared in the generated text p
 			answer = answer.json()
 			if answer.get("status") == 404:
 				raise TSError(f"Textsynth returned error: {answer.get('error')}")
+				
+			return Complete(answer["text"], answer["reached_end"], answer["input_tokens"], answer["output_tokens"])
+			
 		except TSError as e:
 			print(e)
 			exit(0)
 		except:
-			pass
-			
-		if stream:
 			return self._streamed(answer)
-		else:
-			answer = answer.json()
-			return Complete(answer["text"], answer["reached_end"], answer["input_tokens"], answer["output_tokens"])
+			
+			
 		
 	def log_prob(continuation: str = "", context: str = ""):
 		"""
