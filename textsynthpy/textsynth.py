@@ -110,8 +110,7 @@ class TextSynth():
 		:param presence_penalty: Optional(Range: -2 to 2, Default = 0). A positive value penalizes tokens which already appeared in the generated text. Hence it forces the model to have a more diverse output.
 		:type presence_penalty: int
 	
-		:param frequency_penalty: Optional number (Range: -2 to 2, Default = 0)
-A positive value penalizes tokens which already appeared in the generated text proportionaly to their frequency. Hence it forces the model to have a more diverse output.
+		:param frequency_penalty: Optional number (Range: -2 to 2, Default = 0). A positive value penalizes tokens which already appeared in the generated text proportionaly to their frequency. Hence it forces the model to have a more diverse output.
 		:type frequency_penalty: int
 		"""
 		
