@@ -54,7 +54,7 @@ class TextSynth():
 		"""
 		Downloads from githup page current list of engines with small descriprion and prints it OR returns as a list
 		
-		:param as_dict: if True returns a list, else prints engines on screen
+		:param as_dict: if True returns a dict, else prints engines on screen
 		:type as_dict: bool
 		"""
 		try:
