@@ -12,7 +12,7 @@ How to use:
 ```Python
 from textsynthpy import TextSynth, Complete
 
-# Instantiate a TextSynth object
+# Initantiate a TextSynth object
 con = TextSynth(API_KEY_HERE)
 
 # text completion 
@@ -21,9 +21,10 @@ answer = con.text_complete("prompt")
 # print generated text
 print(answer.text)
 
-# Note
-.text attribute returns only generated text, without endeared prompt.
-```
+### Engines
+# You can print engine list by using
+TextSynth.engines()
 
-# documentation
-https://textsynthpy.readthedocs.io/
+# adding True as parametr will return you a dict of engines
+engines = TextSynth.engines(True)
+```
