@@ -141,7 +141,7 @@ class TextSynth():
 			
 			
 		
-	def log_prob(continuation: str = "", context: str = ""):
+	def log_prob(continuation: str, context: str = ""):
 		"""
 		Returns Log object:
 		This endpoint returns the logarithm of the probability that a continuation is generated after a context. It can be used to answer questions when only a few answers (such as yes/no) are possible. It can also be used to benchmark the models. 
@@ -161,7 +161,7 @@ class TextSynth():
 		answer = (post(f"https://api.textsynth.com/v1/engines/{self.engine}/logprob", json = data, headers = headers)).json()
 		return Log(answer["logprob"], answer["is_greedy"], answer["input_tokens"])
 		
-	def tokenize(self, text):
+	def tokenize(self, text:str):
 		"""
 		Method returns array of integers: token indexes corresponding to a given text. It is useful for example to know the exact number of tokens of a text or to specify logit biases with the completion endpoint. The tokens are specific to a given model. Note: using tokenize endpoint is free.
 		 
