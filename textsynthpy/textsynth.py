@@ -104,8 +104,7 @@ class TextSynth():
 		:param stop: Optional (Default = None). Stop the generation when the string(s) are encountered. The generated text does not contain the string. stream must be set to false when this feature is used. The length of the array is at most 5.
 		:type stop: str
 		
-		:param logit_bias: Optional (Default = {}). Modify the likelihood of the specified tokens in the completion. The specified object is a map between the token indexes and the corresponding logit bias. A negative bias reduces the likelihood of the corresponding token. The bias must be between -100 and 100. Note that the token indexes are specific to the selected model. You can use tokenize()  to retrieve the token indexes of a given model. 
-Example: if you want to ban the " unicorn" token for GPT-J, you can use: { "44986": -100 }
+		:param logit_bias: Optional (Default = {}). Modify the likelihood of the specified tokens in the completion. The specified object is a map between the token indexes and the corresponding logit bias. A negative bias reduces the likelihood of the corresponding token. The bias must be between -100 and 100. Note that the token indexes are specific to the selected model. You can use tokenize()  to retrieve the token indexes of a given model. Example - if you want to ban the " unicorn" token for GPT-J, you can use: { "44986": -100 }
 		:type logit_bias: dict
 		
 		:param presence_penalty: Optional(Range: -2 to 2, Default = 0). A positive value penalizes tokens which already appeared in the generated text. Hence it forces the model to have a more diverse output.
