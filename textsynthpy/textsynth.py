@@ -69,7 +69,7 @@ class TextSynth():
 	
 	def text_complete(
 		self,
-		prompt: str = None,
+		prompt: str,
 		max_tokens: int = 100,
 		temperature: float = 1,
 		top_k: int = 40,
