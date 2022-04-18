@@ -10,10 +10,14 @@ pip install textsynthpy
 How to use:
 
 ```Python
+import os
 from textsynthpy import TextSynth, Complete
 
+# Load your API key from an environment variable or secret management service
+key = os.getenv("TEXTSYNTH_API")
+
 # Initantiate a TextSynth object
-con = TextSynth(API_KEY_HERE)
+con = TextSynth(key))
 
 # text completion 
 answer = con.text_complete("prompt")
@@ -23,7 +27,6 @@ print(answer.text)
 ```
 
 ### Engines
-
 ```Python
 # You can print engine list by using
 TextSynth.engines()
