@@ -1,7 +1,0 @@
-{
-  "gpt_6B": "GPT-J is a language model with 6 billion parameters trained on the Pile (825 GB of text data) published by EleutherAI. ",
-  "boris_6B": "Boris is a fine tuned version of GPT-J for the French language. ",
-  "fairseq_gpt_13B": "Fairseq GPT 13B is an English language model with 13 billion parameters. ",
-  "gptneox_20B": "GPT-NeoX-20B is the largest publically available English language model with 20 billion parameters. ", 
-  "m2m100_1_2B" : "M2M100 1.2B is a 1.2 billion parameter language model specialized for translation. It supports multilingual translation between 100 languages." 
-} 
